@@ -1,0 +1,476 @@
+/* ========================================
+   ClimatVision — Feuille de style
+   Fichier : style.css
+   ======================================== */
+
+/* ── VARIABLES DE COULEURS ── */
+:root {
+  --bg: #06090f;
+  --surface: #0d1117;
+  --card: #111827;
+  --card2: #161d2e;
+  --border: rgba(255, 255, 255, 0.07);
+  --border2: rgba(255, 255, 255, 0.12);
+  --text: #f0f4ff;
+  --muted: #7b8db0;
+  --dim: #3d4f70;
+  --blue: #4f9eff;
+  --blue2: #1d6cd8;
+  --teal: #2dd4bf;
+  --orange: #fb923c;
+  --red: #f87171;
+  --green: #4ade80;
+  --yellow: #fbbf24;
+  --accent: #4f9eff;
+}
+
+/* ── RESET ── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid var(--border);
+  background: rgba(6, 9, 15, 0.95);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #4f9eff, #2dd4bf);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+}
+.logo-name {
+  font-family: 'Space Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+.logo-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.live-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--green);
+  font-family: 'Space Mono', monospace;
+}
+.live-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+/* ── BARRE DE RECHERCHE ── */
+.search-section {
+  padding: 2rem 2rem 0;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 480px;
+}
+.search-wrap svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  fill: var(--muted);
+}
+#city-input {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 12px 16px 12px 44px;
+  color: var(--text);
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+#city-input:focus {
+  border-color: var(--blue);
+}
+#city-input::placeholder {
+  color: var(--muted);
+}
+.search-btn {
+  padding: 12px 24px;
+  background: var(--blue2);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.search-btn:hover {
+  background: var(--blue);
+}
+.quick-cities {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.city-chip {
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+}
+.city-chip:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+/* ── GRILLE PRINCIPALE ── */
+.main {
+  padding: 1.5rem 2rem 2rem;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 1.5rem;
+}
+@media (max-width: 900px) {
+  .main {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── CARTE MÉTÉO ── */
+.weather-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.weather-card::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(79,158,255,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.weather-city {
+  font-size: 22px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.weather-country {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.weather-date {
+  font-size: 13px;
+  color: var(--muted);
+  font-family: 'Space Mono', monospace;
+}
+.weather-main {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.weather-icon {
+  font-size: 64px;
+  line-height: 1;
+}
+.weather-temp {
+  font-family: 'Space Mono', monospace;
+  font-size: 62px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text);
+}
+.weather-temp sup {
+  font-size: 28px;
+  vertical-align: top;
+  margin-top: 12px;
+  color: var(--muted);
+}
+.weather-desc {
+  font-size: 15px;
+  color: var(--muted);
+  text-transform: capitalize;
+  margin-top: 4px;
+}
+.weather-feels {
+  font-size: 13px;
+  color: var(--dim);
+}
+
+/* ── STATISTIQUES MÉTÉO ── */
+.weather-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 0.5rem;
+}
+.stat-box {
+  background: var(--card2);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.stat-label {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Space Mono', monospace;
+}
+.stat-value {
+  font-size: 18px;
+  font-weight: 600;
+  font-family: 'Space Mono', monospace;
+}
+
+/* ── PRÉVISIONS ── */
+.forecast-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 0.25rem;
+}
+.forecast-item {
+  flex: 1;
+  background: var(--card2);
+  border-radius: 12px;
+  padding: 10px 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.forecast-day  { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
+.forecast-icon { font-size: 22px; }
+.forecast-temp { font-size: 13px; font-weight: 600; }
+.forecast-low  { font-size: 11px; color: var(--muted); }
+
+/* ── COLONNE DROITE ── */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── CARTES GRAPHIQUES ── */
+.chart-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.5rem;
+}
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+.card-title { font-size: 16px; font-weight: 600; }
+.card-sub   { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+.card-badge {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+}
+.badge-red  { background: rgba(248,113,113,0.15); color: var(--red); }
+.badge-blue { background: rgba(79,158,255,0.15);  color: var(--blue); }
+.badge-teal { background: rgba(45,212,191,0.15);  color: var(--teal); }
+
+.chart-wrap { position: relative; }
+
+/* ── ÉCHELLE ANOMALIE ── */
+.anomaly-scale {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+.scale-bar {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, #4f9eff, #ffffff, #fb923c, #f87171);
+}
+.scale-label { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
+
+/* ── GRILLE CHIFFRES CLÉS ── */
+.facts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+.fact-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.fact-icon  { font-size: 28px; }
+.fact-value { font-size: 24px; font-weight: 700; font-family: 'Space Mono', monospace; }
+.fact-label { font-size: 13px; color: var(--muted); line-height: 1.4; }
+.trend-up   { color: var(--red); }
+.trend-down { color: var(--blue); }
+
+/* ── MESSAGES CHARGEMENT / ERREUR ── */
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: var(--muted);
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+}
+.error-msg {
+  color: var(--red);
+  font-size: 13px;
+  padding: 0.75rem 1rem;
+  background: rgba(248, 113, 113, 0.08);
+  border-radius: 8px;
+  border: 1px solid rgba(248, 113, 113, 0.2);
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 1.5rem 2rem;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--dim);
+}
+footer a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up  { animation: fadeUp 0.5s ease both; }
+.delay-1  { animation-delay: 0.1s; }
+.delay-2  { animation-delay: 0.2s; }
+.delay-3  { animation-delay: 0.3s; }
+
+/* ── ROSE DES VENTS ── */
+.compass-wrap {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+.compass {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px solid var(--border2);
+  position: relative;
+  flex-shrink: 0;
+}
+.compass-n, .compass-s, .compass-e, .compass-w {
+  position: absolute;
+  font-size: 10px;
+  color: var(--muted);
+  font-family: 'Space Mono', monospace;
+}
+.compass-n { top: 4px;    left: 50%; transform: translateX(-50%); }
+.compass-s { bottom: 4px; left: 50%; transform: translateX(-50%); }
+.compass-e { right: 6px;  top: 50%;  transform: translateY(-50%); }
+.compass-w { left: 6px;   top: 50%;  transform: translateY(-50%); }
+.compass-needle {
+  position: absolute;
+  width: 3px;
+  height: 36px;
+  background: linear-gradient(var(--red) 50%, var(--blue) 50%);
+  border-radius: 2px;
+  top: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+}
+.compass-center {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

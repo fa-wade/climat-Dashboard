@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ClimatVision — Tableau de bord météo &amp; climat</title>
+
+  <!-- Polices Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <!-- Bibliothèque de graphiques Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+  <!-- Notre feuille de style -->
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════
+       EN-TÊTE
+  ════════════════════════════════════════ -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
+                   10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93
+                   0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54
+                   c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2
+                   c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41
+                   c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="logo-name">ClimatVision</div>
+        <div class="logo-sub">Météo &amp; Changement Climatique</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="live-badge">
+        <div class="live-dot"></div>
+        Données en direct
+      </div>
+    </div>
+  </header>
+
+  <!-- ════════════════════════════════════════
+       BARRE DE RECHERCHE
+  ════════════════════════════════════════ -->
+  <div class="search-section">
+    <div style="flex:1; max-width:600px;">
+      <div style="display:flex; gap:12px;">
+        <div class="search-wrap" style="flex:1;">
+          <svg viewBox="0 0 24 24">
+            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5
+                     A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57
+                     l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0
+                     C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5
+                     14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+          <input
+            id="city-input"
+            placeholder="Rechercher une ville... (ex: Dakar, Paris, Tokyo)"
+            onkeydown="if(event.key==='Enter') searchCity()"
+          />
+        </div>
+        <button class="search-btn" onclick="searchCity()">Rechercher</button>
+      </div>
+
+      <!-- Raccourcis villes -->
+      <div class="quick-cities">
+        <span class="city-chip" onclick="loadCity('Dakar')">🇸🇳 Dakar</span>
+        <span class="city-chip" onclick="loadCity('Paris')">🇫🇷 Paris</span>
+        <span class="city-chip" onclick="loadCity('New York')">🇺🇸 New York</span>
+        <span class="city-chip" onclick="loadCity('Tokyo')">🇯🇵 Tokyo</span>
+        <span class="city-chip" onclick="loadCity('Dubai')">🇦🇪 Dubai</span>
+        <span class="city-chip" onclick="loadCity('São Paulo')">🇧🇷 São Paulo</span>
+      </div>
+
+      <div id="error-zone" style="margin-top:8px;"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       MÉTÉO EN TEMPS RÉEL (rempli par JS)
+  ════════════════════════════════════════ -->
+  <div class="main" id="main-content">
+    <div style="grid-column:1/-1; text-align:center; padding:4rem; color:var(--muted);">
+      <div style="font-size:48px; margin-bottom:1rem;">🌍</div>
+      <div style="font-family:'Space Mono',monospace; font-size:14px;">
+        Recherche une ville pour afficher la météo en direct
+      </div>
+      <div style="font-size:13px; margin-top:8px;">
+        ou clique sur une ville rapide ci-dessus
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SECTION CLIMATIQUE (données scientifiques)
+  ════════════════════════════════════════ -->
+  <div style="padding:0 2rem 2rem;" id="climate-section">
+
+    <div style="font-size:20px; font-weight:600; margin-bottom:1.25rem;
+                display:flex; align-items:center; gap:10px;">
+      <span style="font-size:22px;">🌡️</span>
+      Changement climatique global — données scientifiques
+    </div>
+
+    <!-- Chiffres clés -->
+    <div class="facts-grid fade-up">
+      <div class="fact-card">
+        <div class="fact-icon">🌡️</div>
+        <div class="fact-value trend-up">+1.45°C</div>
+        <div class="fact-label">Réchauffement moyen depuis l'ère préindustrielle (2023)</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon">🌊</div>
+        <div class="fact-value trend-up">+21 cm</div>
+        <div class="fact-label">Élévation du niveau des mers depuis 1900</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon">🧊</div>
+        <div class="fact-value trend-up">−13%</div>
+        <div class="fact-label">Réduction de la banquise arctique par décennie</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon">💨</div>
+        <div class="fact-value" style="color:var(--orange);">424 ppm</div>
+        <div class="fact-label">Concentration CO₂ atmosphérique (2024, record historique)</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon">🔥</div>
+        <div class="fact-value trend-up">2023</div>
+        <div class="fact-label">Année la plus chaude jamais enregistrée sur Terre</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon">🌿</div>
+        <div class="fact-value" style="color:var(--green);">2050</div>
+        <div class="fact-label">Objectif neutralité carbone selon l'Accord de Paris</div>
+      </div>
+    </div>
+
+    <!-- Graphiques climatiques -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:1.5rem;">
+
+      <!-- Anomalie de température -->
+      <div class="chart-card fade-up delay-1">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Anomalie de température mondiale</div>
+            <div class="card-sub">Écart par rapport à la moyenne 1951–1980 · Source NASA GISS</div>
+          </div>
+          <span class="card-badge badge-red">+1.45°C en 2023</span>
+        </div>
+        <div class="chart-wrap" style="height:220px;">
+          <canvas id="tempChart"></canvas>
+        </div>
+        <div class="anomaly-scale">
+          <span class="scale-label">−0.5°C</span>
+          <div class="scale-bar"></div>
+          <span class="scale-label">+1.5°C</span>
+        </div>
+      </div>
+
+      <!-- CO₂ -->
+      <div class="chart-card fade-up delay-2">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Concentration CO₂ atmosphérique</div>
+            <div class="card-sub">En parties par million (ppm) · Source NOAA Mauna Loa</div>
+          </div>
+          <span class="card-badge badge-teal">424 ppm en 2024</span>
+        </div>
+        <div class="chart-wrap" style="height:220px;">
+          <canvas id="co2Chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Niveau de la mer -->
+      <div class="chart-card fade-up delay-2">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Élévation du niveau de la mer</div>
+            <div class="card-sub">Millimètres par rapport à 1993 · Source NASA Satellite Altimetry</div>
+          </div>
+          <span class="card-badge badge-blue">+101 mm depuis 1993</span>
+        </div>
+        <div class="chart-wrap" style="height:220px;">
+          <canvas id="seaChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Banquise arctique -->
+      <div class="chart-card fade-up delay-3">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Étendue de la banquise arctique</div>
+            <div class="card-sub">Millions de km² en septembre · Source NSIDC</div>
+          </div>
+          <span class="card-badge badge-red">Tendance −13%/décennie</span>
+        </div>
+        <div class="chart-wrap" style="height:220px;">
+          <canvas id="iceChart"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       PIED DE PAGE
+  ════════════════════════════════════════ -->
+  <footer>
+    <p>
+      ClimatVision — Données météo :
+      <a href="https://open-meteo.com">Open-Meteo</a> (libre &amp; gratuit) ·
+      Données climatiques : NASA GISS, NOAA, NSIDC · Projet scolaire 2025
+    </p>
+  </footer>
+
+  <!-- Notre script JavaScript -->
+  <script src="script.js"></script>
+
+</body>
+</html>
